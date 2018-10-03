@@ -171,6 +171,16 @@ impl Library {
     pub unsafe fn get<'lib, T>(&'lib self, symbol: &[u8]) -> Result<Symbol<'lib, T>> {
         self.0.get(symbol).map(|from| Symbol::from_raw(from, self))
     }
+
+    #[cfg(unix)]
+    pub fn new_with_flags<P: AsRef<OsStr>>(filename: P, flags: i32) -> Result<Library> {
+        imp::Library::open(Some(filename), flags).map(From::from)
+    }
+
+    #[cfg(windows)]
+    pub fn new_with_flags<P: AsRef<OsStr>>(filename: P, _flags: i32) -> Result<Library> {
+        imp::Library::new(filename).map(From::from)
+    }
 }
 
 impl fmt::Debug for Library {

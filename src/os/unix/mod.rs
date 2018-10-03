@@ -287,6 +287,7 @@ extern {
 
 #[cfg(not(target_os="android"))]
 const RTLD_NOW: raw::c_int = 2;
+const RTLD_GLOBAL: raw::c_int = 0x00100;
 #[cfg(target_os="android")]
 const RTLD_NOW: raw::c_int = 0;
 
